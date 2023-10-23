@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 10
+
+int count = 0;
+
+// Creating stack
+struct stack {
+    int item[MAX];
+    int top;
+};
+typedef struct stack st;
+
+void createEmptyStack(st* s) {
+    s->top = -1;
+}
+
+// Check if stack is full
+int isfull(st* s) {
+    if (s->top == MAX - 1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// Check if stack is empty
+int isempty(st* s) {
+    if (s->top == -1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// Add element into stack
+void push(st* s, int newitem) {
+    if (isfull(s)) {
+        printf("Stack full\n");
+    } else {
+        s->top++;
+        s->item[s->top] = newitem;
+    }
+    count++;
+}
+
+// Remove element from stack
+int pop(st* s) {
+    if (isempty(s)) {
+        printf("Stack empty\n");
+        return -1;
+    } else {
+        int popped_item = s->item[s->top];
+        s->top--;
+        count--;
+        return popped_item;
+    }
+}
+
+// Print elements of stack
+void printStack(st* s) {
+    printf("Stack: ");
+    for (int i = 0; i < count; i++) {
+        printf("%d ", s->item[i]);
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    st* s = malloc(sizeof(st));
+    createEmptyStack(s);
+
+    push(s, 1);
+    push(s, 2);
+    push(s, 3);
+    push(s, 4);
+
+    printStack(s);
+
+    int i;
+    for (i = 1; i <= 12; i++) {
+        if (isfull(s)) {
+            printf("Overflow condition\n");
+            break;
+        }
+        push(s, i);
+    }
+
+    printf("\nAfter pushing 12 elements\n");
+    printStack(s);
+
+    int popped;
+    printf("\nPopping elements:\n");
+    for (i = 0; i < 12; i++) {
+        popped = pop(s);
+        if (popped != -1) {
+            printf("Popped item: %d\n", popped);
+        } else {
+            printf("No more items to pop\n");
+            break;
+        }
+    }
+
+    free(s); // Free the allocated memory
+
+    return 0;
+}
